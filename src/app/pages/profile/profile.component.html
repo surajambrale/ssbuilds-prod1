@@ -1,0 +1,269 @@
+<div class="profile-page">
+
+  <h1>👤 My Profile</h1>
+
+  <!-- 🔥 ROLE SELECT -->
+
+  <div class="role-box">
+
+    <label>
+      Select Account Type
+    </label>
+
+    <select [(ngModel)]="selectedRole">
+
+      <option value="user">
+        User
+      </option>
+
+      <option value="admin">
+        Admin
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <!-- 🔥 USER SECTION -->
+
+  <div *ngIf="selectedRole === 'user'">
+
+    <!-- 🔥 LOGIN -->
+
+    <div class="login-box" *ngIf="!isLoggedIn">
+
+      <h3>
+        Login to Continue
+      </h3>
+
+      <button class="login-btn" (click)="goLogin()">
+        Login
+      </button>
+
+    </div>
+
+    <!-- 🔥 PROFILE -->
+
+    <div *ngIf="isLoggedIn">
+
+      <div class="profile-card">
+
+        <div class="profile-top">
+
+          <div class="profile-image">
+            👤
+          </div>
+
+          <div class="profile-info">
+
+            <h2>
+              {{ user?.name }}
+            </h2>
+
+            <p>
+              {{ user?.phone }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 🔥 MENU -->
+
+      <!-- Subscription code start -->
+
+      <div class="subscription-card" *ngIf="subscription">
+
+        <h3>⭐ Premium Membership</h3>
+
+        <p>
+          Plan :
+          <b>{{subscription.plan}}</b>
+        </p>
+
+        <p>
+          Expiry :
+          <b>{{subscription.expiryDate | date:'dd MMM yyyy'}}</b>
+        </p>
+
+        <p class="active">
+          ✅ Active Membership
+        </p>
+
+      </div>
+
+
+      <div class="subscription-card" *ngIf="!subscription">
+
+        <h3>No Active Membership</h3>
+
+        <button (click)="subscribeNow()">
+          Subscribe ₹{{ subscriptionSetting?.price }}/month
+        </button>
+
+      </div>
+
+      <!-- subscription code end -->
+
+
+      <!-- 🔥 QUICK STATS -->
+
+      <div class="menu-card">
+
+        <!-- MY BOOKS -->
+
+        <div class="menu-item" routerLink="/my-books">
+
+          <!-- addedd start -->
+
+          <!-- PURCHASE COUNT -->
+
+          <div class="menu-item">
+
+            <span>🛒</span>
+
+            <p>
+              Purchased:
+              {{ purchasedBooksCount }}
+            </p>
+
+          </div>
+
+          <!-- CONTINUE READING -->
+
+          <div class="menu-item" (click)="continueReading()">
+
+            <span>📖</span>
+
+            <p>Continue Reading</p>
+
+          </div>
+
+          <!-- addedd end -->
+
+          <span>📚</span>
+
+          <p>My Books</p>
+
+        </div>
+
+        <!-- PURCHASE COUNT -->
+
+        <div class="menu-item">
+
+          <span>🛒</span>
+
+          <p>
+            Purchased:
+            {{ purchasedBooksCount }}
+          </p>
+
+        </div>
+
+        <!-- CONTINUE READING -->
+
+        <div class="menu-item" (click)="continueReading()">
+
+          <span>📖</span>
+
+          <p>Continue Reading</p>
+
+        </div>
+
+      </div>
+
+      <!-- 🔥 PAYMENTS -->
+
+      <div class="payments-box">
+
+        <h3>
+          💳 Payment History
+        </h3>
+
+        <div class="payment-card" *ngFor="let payment of payments">
+
+          <h4>
+            {{ payment.bookTitle || getBookName(payment.bookId) }}
+          </h4>
+
+          <p>
+            ₹{{ payment.amount }}
+          </p>
+
+        </div>
+
+        <div class="empty-payment" *ngIf="payments.length === 0">
+
+          No Payments Found
+
+        </div>
+
+      </div>
+
+
+
+      <!-- 🔥 LOGOUT -->
+
+      <button class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- 🔥 ADMIN -->
+
+  <div *ngIf="selectedRole === 'admin'">
+
+    <div class="admin-login">
+
+      <input type="password" placeholder="Enter Admin Password" [(ngModel)]="adminPassword" />
+
+      <button (click)="adminLogin()">
+        Login Admin
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- navbar start start -->
+<!-- 🔥 BOTTOM NAVBAR -->
+
+<div class="bottom-navbar">
+
+  <!-- HOME -->
+  <div class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <span>🏠</span>
+    <p>Home</p>
+  </div>
+
+  <!-- EXPLORE -->
+  <div class="nav-item" routerLink="/explore" routerLinkActive="active">
+    <span>🔍</span>
+    <p>Explore</p>
+  </div>
+
+  <!-- MY BOOKS -->
+  <div class="nav-item" routerLink="/my-books" routerLinkActive="active">
+    <span>📚</span>
+    <p>My Books</p>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="nav-item" routerLink="/profile" routerLinkActive="active">
+    <span>👤</span>
+    <p>Profile</p>
+  </div>
+
+</div>
+
+<!-- navbar end -->

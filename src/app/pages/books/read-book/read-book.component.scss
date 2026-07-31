@@ -1,0 +1,259 @@
+/* ===============================
+   PREMIUM BOOK READER
+================================ */
+
+.reader {
+
+  min-height: 100vh;
+
+  background: #0d0d0d;
+
+  padding: 25px;
+
+  color: white;
+
+  position: relative;
+
+  overflow: hidden;
+
+}
+
+/* Header */
+
+.reader-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 25px;
+
+  flex-wrap: wrap;
+
+  gap: 15px;
+
+}
+
+.reader-header h2 {
+
+  font-size: 28px;
+
+  color: #FFD54F;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+}
+
+/* Buttons */
+
+.actions {
+
+  display: flex;
+
+  gap: 12px;
+
+}
+
+.actions button {
+
+  padding: 12px 22px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .3s;
+
+}
+
+.back-btn {
+
+  background: #FFD54F;
+
+  color: #111;
+
+}
+
+.back-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(255, 213, 79, .35);
+
+}
+
+.logout-btn {
+
+  background: #ef4444;
+
+  color: white;
+
+}
+
+.logout-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(239, 68, 68, .35);
+
+}
+
+/* PDF Container */
+
+.pdf-container {
+
+  background: #181818;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  border: 1px solid #2d2d2d;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+
+}
+
+/* Watermark */
+
+.watermark {
+
+  position: fixed;
+
+  top: 50%;
+
+  left: 50%;
+
+  transform: translate(-50%, -50%) rotate(-30deg);
+
+  font-size: 42px;
+
+  font-weight: bold;
+
+  color: rgba(255, 255, 255, .08);
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  user-select: none;
+
+  z-index: 999999;
+
+  mix-blend-mode: difference;
+
+}
+
+/* Loading */
+
+.loading {
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  height: 100vh;
+
+  background: #0d0d0d;
+
+  color: white;
+
+}
+
+.loader {
+
+  width: 60px;
+
+  height: 60px;
+
+  border: 6px solid #333;
+
+  border-top: 6px solid gold;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+
+  margin-bottom: 20px;
+
+}
+
+@keyframes spin {
+
+  100% {
+
+    transform: rotate(360deg);
+
+  }
+
+}
+
+/* Mobile */
+
+@media(max-width:768px) {
+
+  .reader {
+
+    padding: 15px;
+
+  }
+
+  .reader-header {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+  }
+
+  .reader-header h2 {
+
+    font-size: 22px;
+
+  }
+
+  .actions {
+
+    width: 100%;
+
+    display: flex;
+
+  }
+
+  .actions button {
+
+    flex: 1;
+
+  }
+
+  .watermark {
+
+    font-size: 28px;
+
+  }
+
+  .pdf-container {
+
+    padding: 10px;
+
+  }
+
+}

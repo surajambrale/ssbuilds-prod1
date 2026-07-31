@@ -1,0 +1,121 @@
+<div class="explore-page">
+
+  <h2 class="title">
+    Explore Books
+  </h2>
+
+  <!-- SEARCH BAR -->
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      placeholder="Search books..."
+      [(ngModel)]="searchText"
+      (input)="searchBooks()"
+    />
+
+  </div>
+
+  <!-- BOOKS -->
+
+  <div
+    class="book-grid"
+    *ngIf="filteredBooks.length > 0"
+  >
+
+    <div
+      class="book-card"
+      *ngFor="let book of filteredBooks"
+      (click)="openBook(book)"
+    >
+
+      <img [src]="book.image" />
+
+      <div class="book-info">
+
+        <h3>{{ book.title }}</h3>
+
+        <p>
+          Premium Fitness Ebook
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NO BOOK -->
+
+  <div
+    class="not-found"
+    *ngIf="showNotFound"
+  >
+
+    <h2>
+      😔 Sorry
+    </h2>
+
+    <p>
+      This book is currently not available.
+      <br>
+      Future me hum aapke liye laayenge 🚀
+    </p>
+
+    <button (click)="sendRequest()">
+      Request on WhatsApp
+    </button>
+
+  </div>
+
+</div>
+
+<!-- navbar start start -->
+<!-- 🔥 BOTTOM NAVBAR -->
+
+<div class="bottom-navbar">
+
+  <!-- HOME -->
+  <div
+    class="nav-item"
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <span>🏠</span>
+    <p>Home</p>
+  </div>
+
+  <!-- EXPLORE -->
+  <div
+    class="nav-item"
+    routerLink="/explore"
+    routerLinkActive="active"
+  >
+    <span>🔍</span>
+    <p>Explore</p>
+  </div>
+
+  <!-- MY BOOKS -->
+  <div
+    class="nav-item"
+    routerLink="/my-books"
+    routerLinkActive="active"
+  >
+    <span>📚</span>
+    <p>My Books</p>
+  </div>
+
+  <!-- PROFILE -->
+  <div
+    class="nav-item"
+    routerLink="/profile"
+    routerLinkActive="active"
+  >
+    <span>👤</span>
+    <p>Profile</p>
+  </div>
+
+</div>
+<!-- navbar end -->

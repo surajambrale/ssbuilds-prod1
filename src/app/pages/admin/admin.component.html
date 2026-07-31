@@ -1,0 +1,904 @@
+<div class="admin">
+
+  <!-- 🔐 LOGIN -->
+  <div *ngIf="!isLoggedIn" class="login-box">
+
+    <h2>Admin Login</h2>
+
+    <input type="password" [(ngModel)]="password" placeholder="Enter password">
+
+    <button (click)="login()">
+      Login
+    </button>
+
+  </div>
+
+  <!-- 🔥 DASHBOARD -->
+  <div *ngIf="isLoggedIn">
+
+    <!-- 🔥 TOP BAR -->
+    <div class="top-bar">
+
+      <h2>📊 Admin Dashboard</h2>
+
+      <button class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+    <!-- 🔥 ANALYTICS -->
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <h3>Total Users</h3>
+        <p>{{ users.length }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Total Purchases</h3>
+        <p>{{ purchases.length }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Total Revenue</h3>
+        <p>₹{{ totalRevenue }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Today Revenue</h3>
+        <p>₹{{ todayRevenue }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Weekly Revenue</h3>
+        <p>₹{{ weeklyRevenue }}</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Monthly Revenue</h3>
+        <p>₹{{ monthlyRevenue }}</p>
+      </div>
+
+      <div class="stat-card">
+
+        <h3>Top Selling</h3>
+
+        <p>{{ topSellingBook }}</p>
+
+        <small>
+          {{ topSellingCount }} Sales
+        </small>
+
+      </div>
+
+    </div>
+
+    <!-- 🔥 DROPDOWN -->
+    <div class="view-select">
+
+      <select [(ngModel)]="selectedView">
+
+        <option value="users">
+          Users
+        </option>
+
+        <option value="purchases">
+          Purchases
+        </option>
+
+        <option value="grant">
+          Grant Access
+        </option>
+
+        <option value="subscriptions">
+          Subscribers
+        </option>
+
+        <option value="testimonials">
+          Testimonials
+        </option>
+
+        <option value="uploadBook">
+          Upload Book
+        </option>
+
+        <option value="subscriptionSetting">
+          Subscription Settings
+        </option>
+
+        <option value="couponManagement">
+          Coupon Management
+        </option>
+
+        <option value="appSetting">
+          App Settings
+        </option>
+
+        <option value="notificationSetting">
+          Notification Settings
+        </option>
+
+        <option value="changePassword">
+          Change Admin Password
+        </option>
+
+      </select>
+
+    </div>
+
+    <!-- 🔥 SEARCH -->
+    <div class="search-area">
+
+      <input type="text" [(ngModel)]="searchPhone" placeholder="Search by phone number...">
+
+      <button (click)="searchUser()">
+        GO
+      </button>
+
+    </div>
+
+    <!-- 🔥 SEARCH RESULT -->
+    <div *ngIf="searchedPurchases.length > 0">
+
+      <h2 class="section-title">
+        🔎 Search Result
+      </h2>
+
+      <div *ngFor="let p of searchedPurchases" class="card">
+
+        <p>
+          <b>Name:</b>
+          {{ p.userName }}
+        </p>
+
+        <p>
+          <b>Phone:</b>
+          {{ p.userPhone }}
+        </p>
+
+        <p>
+          <b>Book:</b>
+          {{ getBookName(p.bookId) }}
+        </p>
+
+        <p>
+          <b>Amount:</b>
+
+          ₹{{ getBookAmount(p.bookId) }}
+
+        </p>
+
+        <p>
+          <b>Payment ID:</b>
+          {{ p.paymentId }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- 🔥 EXPORT -->
+    <button class="export-btn" (click)="exportCSV()">
+      Export Full CSV
+    </button>
+
+    <!-- 🔥 GRANT ACCESS -->
+    <!-- 🔥 GRANT ACCESS -->
+    <div *ngIf="selectedView === 'grant'" class="card">
+
+      <h3>Grant Book Access</h3>
+
+      <!-- USER -->
+      <select [(ngModel)]="selectedUser">
+
+        <option value="">
+          Select User
+        </option>
+
+        <option *ngFor="let u of users" [value]="u._id">
+          {{u.name}} ({{u.phone}})
+        </option>
+
+      </select>
+
+      <br><br>
+
+      <h4>Select Book</h4>
+
+      <select [(ngModel)]="selectedBook" style="width:100%;padding:10px;border-radius:8px;">
+
+        <option value="">
+          Select Book
+        </option>
+
+        <option *ngFor="let b of books" [value]="b._id || b.id">
+
+          {{ b.title || b.name }} - ₹{{ b.price }}
+
+        </option>
+
+      </select>
+
+      <br>
+
+      <button [disabled]="!selectedUser || !selectedBook" (click)="grantAccess()">
+
+        Give Access
+
+      </button>
+
+    </div>
+
+    <!-- 🔥 USERS -->
+    <div *ngIf="selectedView === 'users'">
+
+      <h2 class="section-title">
+        👥 Users
+      </h2>
+
+      <div *ngFor="let user of users" class="card">
+
+        <p>
+          <b>Name:</b>
+          {{ user.name }}
+        </p>
+
+        <p>
+          <b>Phone:</b>
+          {{ user.phone }}
+        </p>
+
+        <button class="delete-btn" (click)="deleteUser(user._id)">
+          Delete User
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 🔥 PURCHASES -->
+    <div *ngIf="selectedView === 'purchases'">
+
+      <h2 class="section-title">
+        💳 Purchases
+      </h2>
+
+      <div *ngFor="let p of purchases" class="card">
+
+        <p>
+          <b>Name:</b>
+          {{ p.userName }}
+        </p>
+
+        <p>
+          <b>Phone:</b>
+          {{ p.userPhone }}
+        </p>
+
+        <p>
+          <b>Book ID:</b>
+          {{ p.bookId }}
+        </p>
+
+        <p>
+          <b>Book Name:</b>
+          {{ getBookName(p.bookId) }}
+        </p>
+
+        <p>
+          <b>Amount:</b>
+
+          ₹{{ getBookAmount(p.bookId) }}
+
+        </p>
+
+        <p>
+          <b>Payment ID:</b>
+          {{ p.paymentId }}
+        </p>
+
+        <button class="delete-btn" (click)="deletePurchase(p._id)">
+          Delete Purchase
+        </button>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="selectedView==='subscriptions'">
+
+      <h2 class="section-title">
+        💎 Subscribers
+      </h2>
+
+      <div class="card" *ngFor="let s of subscriptions">
+
+        <p><b>Name :</b> {{s.userName}}</p>
+
+        <p><b>Phone :</b> {{s.phone}}</p>
+
+        <p><b>Plan :</b> {{s.planName}}</p>
+
+        <p><b>Amount :</b> ₹{{s.amount}}</p>
+
+        <p><b>Status :</b> {{s.status}}</p>
+
+        <p><b>Expiry :</b> {{s.expiryDate | date:'dd MMM yyyy'}}</p>
+
+        <button class="delete-btn" (click)="deleteSubscription(s._id)">
+
+          🗑 Delete Subscription
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- upload book code start -->
+
+    <div *ngIf="selectedView==='uploadBook'" class="card upload-book-card">
+
+      <h2>📚 Upload New Book</h2>
+
+      <input type="text" placeholder="Book Title" [(ngModel)]="newBook.title">
+
+      <input type="text" placeholder="Author" [(ngModel)]="newBook.author">
+
+      <input type="text" placeholder="Category" [(ngModel)]="newBook.category">
+
+      <textarea placeholder="Book OverView" [(ngModel)]="newBook.description">
+    </textarea>
+
+      <label><b>Selling Price</b></label>
+
+      <input type="number" placeholder="Enter Selling Price" [(ngModel)]="newBook.price">
+
+      <label><b>Offer Price</b></label>
+
+      <input type="number" placeholder="Enter Offer Price" [(ngModel)]="newBook.originalPrice">
+
+      <label>Cover Image</label>
+
+      <input type="file" (change)="onCoverSelected($event)">
+
+      <label>PDF File</label>
+
+      <input type="file" (change)="onPdfSelected($event)">
+
+      <label>Preview Images</label>
+
+      <input type="file" multiple accept="image/*" (change)="onPreviewSelected($event)">
+
+      <button *ngIf="!isEditMode" (click)="uploadBook()">
+
+        📤 Upload Book
+
+      </button>
+
+      <button *ngIf="isEditMode" (click)="updateBook()">
+
+        💾 Update Book
+
+      </button>
+
+      <button *ngIf="isEditMode" (click)="cancelEdit()">
+
+        Cancel
+
+      </button>
+
+      <hr>
+
+      <h2>📚 Uploaded Books</h2>
+
+      <input type="text" placeholder="🔍 Search Book..." [(ngModel)]="searchBook" (input)="searchBooks()" style="
+width:100%;
+padding:12px;
+margin-bottom:20px;
+border-radius:8px;
+border:1px solid #ccc;">
+
+      <div class="uploaded-book-card" *ngFor="let book of paginatedBooks">
+
+        <img [src]="book.coverImage || book.coverUrl" width="100" height="140"
+          style="object-fit:cover;border-radius:8px;">
+
+        <h3>{{ book.title }}</h3>
+
+        <p>{{ book.author }}</p>
+
+        <p>₹{{ book.price }}</p>
+
+        <button style="margin-bottom:10px;background:#2196f3;color:white;" (click)="editBook(book)">
+
+          ✏️ Edit Book
+
+        </button>
+
+        <button class="delete-btn" (click)="deleteBook(book._id)">
+
+          🗑 Delete Book
+
+        </button>
+
+      </div>
+
+      <div style="
+display:flex;
+justify-content:center;
+align-items:center;
+gap:15px;
+margin-top:25px;">
+
+        <button (click)="previousPage()" [disabled]="currentPage==1">
+
+          ⬅ Previous
+
+        </button>
+
+        <span>
+
+          Page {{currentPage}}
+
+          of
+
+          {{totalPages}}
+
+        </span>
+
+        <button (click)="nextPage()" [disabled]="currentPage==totalPages">
+
+          Next ➡
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- upload book code end -->
+
+    <!-- app settings code start -->
+
+    <!-- ==========================
+APP SETTINGS
+========================== -->
+
+    <div *ngIf="selectedView==='appSetting'" class="card">
+
+      <h2>⚙️ App Settings</h2>
+
+      <label>Application Name</label>
+
+      <input type="text" [(ngModel)]="appSetting.appName">
+
+      <label>Application Logo</label>
+
+      <input type="file" (change)="onLogoSelected($event)">
+
+      <button (click)="uploadLogo()">
+
+        Upload Logo
+
+      </button>
+
+      <hr>
+
+      <h3>➕ Add New Setting</h3>
+
+      <select [(ngModel)]="newSetting.label">
+
+        <option value="">Select Setting</option>
+
+        <option>Instagram</option>
+
+        <option>Facebook</option>
+
+        <option>Youtube</option>
+
+        <option>Website</option>
+
+        <option>Email</option>
+
+        <option>Phone</option>
+
+        <option>WhatsApp</option>
+
+        <option>Telegram</option>
+
+        <option>LinkedIn</option>
+
+      </select>
+
+      <input type="text" [(ngModel)]="newSetting.value" placeholder="Enter Value">
+
+      <button (click)="addSetting()">
+
+        Add Setting
+
+      </button>
+
+      <hr>
+
+      <h3>📋 Added Settings</h3>
+
+      <div class="setting-item" *ngFor="let item of appSetting.settings; let i=index">
+
+        <label>{{item.label}}</label>
+
+        <input [(ngModel)]="item.value">
+
+        <button class="delete-btn" (click)="removeSetting(i)">
+
+          Delete
+
+        </button>
+
+      </div>
+
+
+      <button (click)="saveAppSetting()">
+
+        Save All Settings
+
+      </button>
+
+    </div>
+
+
+    <!-- app settings code end -->
+
+    <!-- change admin passeword code start -->
+
+    <div class="card" *ngIf="selectedView === 'changePassword'">
+
+      <h2>🔐 Change Admin Password</h2>
+
+      <input type="password" placeholder="Current Password" [(ngModel)]="currentPassword">
+
+      <input type="password" placeholder="New Password" [(ngModel)]="newPassword">
+
+      <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword">
+
+      <button (click)="changePassword()">
+
+        Update Password
+
+      </button>
+
+    </div>
+
+
+    <!-- change admin password code end -->
+
+
+    <!-- subscription setting code start -->
+
+    <!-- =========================
+     SUBSCRIPTION SETTINGS
+========================= -->
+
+    <div *ngIf="selectedView==='subscriptionSetting'" class="card">
+
+      <h2>💎 Subscription Settings</h2>
+
+      <label>Plan Name</label>
+      <input type="text" [(ngModel)]="subscriptionSetting.planName">
+
+      <label>Price (₹)</label>
+      <input type="number" [(ngModel)]="subscriptionSetting.price">
+
+      <label>Duration (Days)</label>
+      <input type="number" [(ngModel)]="subscriptionSetting.duration">
+
+      <label style="display:flex;align-items:center;gap:10px;">
+
+        <input type="checkbox" [(ngModel)]="subscriptionSetting.active" style="width:auto;">
+
+        Subscription Active
+
+      </label>
+
+
+      <button (click)="updateSubscriptionSetting()">
+
+        💾 Save Settings
+
+      </button>
+
+    </div>
+
+    <!-- subscription setting code end -->
+
+    <!-- //coupon management start -->
+
+    <div *ngIf="selectedView==='couponManagement'" class="card">
+
+      <h2>🎟 Coupon Management</h2>
+
+      <div class="form-group">
+        <label><b>Coupon Code</b></label>
+        <input type="text" placeholder="Example: DIWALI50" [(ngModel)]="coupon.code">
+      </div>
+
+      <div class="form-group">
+        <label><b>Discount Type</b></label>
+        <select [(ngModel)]="coupon.discountType">
+          <option value="flat">Flat Discount (₹)</option>
+          <option value="percentage">Percentage Discount (%)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><b>Discount Value</b></label>
+        <input type="number" placeholder="Example: 100 or 20" [(ngModel)]="coupon.discountValue">
+      </div>
+
+      <div class="form-group">
+        <label><b>Minimum Order Amount (₹)</b></label>
+        <input type="number" placeholder="Example: 399" [(ngModel)]="coupon.minimumOrder">
+      </div>
+
+      <div class="form-group">
+        <label><b>Expiry Date</b></label>
+        <input type="date" [(ngModel)]="coupon.expiryDate">
+      </div>
+
+      <div class="form-group">
+        <label><b>Usage Limit</b></label>
+        <input type="number" placeholder="Example: 100" [(ngModel)]="coupon.usageLimit">
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="coupon.active">
+          Active Coupon
+        </label>
+      </div>
+
+      <button *ngIf="!isCouponEdit" (click)="createCoupon()">
+        ➕ Create Coupon
+      </button>
+
+      <button *ngIf="isCouponEdit" (click)="updateCoupon()">
+
+        💾 Update Coupon
+
+      </button>
+
+      <button *ngIf="isCouponEdit" (click)="cancelCouponEdit()">
+
+        Cancel
+
+      </button>
+
+      <hr>
+
+      <h3>📋 Coupon List</h3>
+
+      <div class="card" *ngFor="let c of coupons">
+
+        <p><b>Code:</b> {{c.code}}</p>
+
+        <p><b>Type:</b> {{c.discountType}}</p>
+
+        <p><b>Value:</b> {{c.discountValue}}</p>
+
+        <p><b>Minimum Order:</b> ₹{{c.minimumOrder}}</p>
+
+        <p><b>Expiry:</b> {{c.expiryDate | date:'dd MMM yyyy'}}</p>
+
+        <p><b>Used:</b> {{c.usedCount}} / {{c.usageLimit}}</p>
+
+        <p>
+
+          <b>Status:</b>
+
+          {{ c.active ? '🟢 Active' : '🔴 Inactive' }}
+
+        </p>
+
+        <button style="background:#2196f3;color:white;margin-right:10px;" (click)="editCoupon(c)">
+
+          ✏ Edit
+
+        </button>
+
+        <button class="delete-btn" (click)="deleteCoupon(c._id)">
+
+          🗑 Delete
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- //coupon management end -->
+
+    <!-- ========================= -->
+    <!-- Notification Settings -->
+    <!-- ========================= -->
+
+    <div *ngIf="selectedView==='notificationSetting'" class="card">
+
+      <h2>📧 Notification Settings</h2>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="notificationSettings.welcomeEmail">
+
+        Welcome Email
+
+      </label>
+
+      <br><br>
+
+      <label>
+
+        <input type="checkbox" [(ngModel)]="notificationSettings.purchaseEmail">
+
+        Purchase Success Email
+
+      </label>
+
+      <br><br>
+
+      <label>
+
+        <input type="checkbox" [(ngModel)]="notificationSettings.subscriptionReminder">
+
+        Subscription Reminder
+
+      </label>
+
+      <br><br>
+
+      <label>
+
+        <input type="checkbox" [(ngModel)]="notificationSettings.expiryReminder">
+
+        Expiry Reminder
+
+      </label>
+
+      <br><br>
+
+      <label>
+
+        <input type="checkbox" [(ngModel)]="notificationSettings.dailyMotivation">
+
+        Daily Motivation Email
+
+      </label>
+
+      <br><br>
+
+      <label>
+
+        <input type="checkbox" [(ngModel)]="notificationSettings.weeklyNewsletter">
+
+        Weekly Newsletter
+
+      </label>
+
+      <br><br>
+
+      <label>
+
+        Reminder Time
+
+      </label>
+
+      <input type="time" [(ngModel)]="notificationSettings.reminderTime">
+
+      <br><br>
+
+      <label>
+
+        Test Email
+
+      </label>
+
+      <input type="email" placeholder="example@gmail.com" [(ngModel)]="testEmail">
+
+      <br><br>
+
+      <button style="background:#ff9800;color:white;margin-right:10px;" (click)="sendTestEmail()">
+
+        📧 Send Test Email
+
+      </button>
+
+      <button style="background:#4caf50;color:white;" (click)="saveNotificationSettings()">
+
+        💾 Save Settings
+
+      </button>
+
+    </div>
+
+
+
+    <!-- testimonial code start -->
+
+    <!-- 🔥 TESTIMONIALS -->
+
+    <div *ngIf="selectedView === 'testimonials'">
+
+      <h2 class="section-title">
+        ⭐ Testimonials
+      </h2>
+
+      <button class="export-btn" (click)="exportTestimonialsCSV()">
+        Export Testimonials CSV
+      </button>
+
+      <div *ngFor="let t of testimonials" class="card">
+
+        <p>
+          <b>Name:</b>
+          {{ t.name }}
+        </p>
+
+        <p>
+          <b>Message:</b>
+          {{ t.message }}
+        </p>
+
+        <p>
+          <b>Rating:</b>
+          ⭐ {{ t.rating }}/5
+        </p>
+
+        <p>
+          <b>Date:</b>
+          {{ t.createdAt | date:'medium' }}
+        </p>
+
+        <button class="delete-btn" (click)="deleteTestimonial(t._id)">
+          Delete Testimonial
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- testimonial code end -->
+
+  </div>
+
+</div>
+
+<!-- navbar start -->
+<!-- 🔥 BOTTOM NAVBAR -->
+
+<div class="bottom-navbar">
+
+  <!-- HOME -->
+  <div class="nav-item" routerLink="/" routerLinkActive="active">
+    <span>🏠</span>
+    <p>Home</p>
+  </div>
+
+  <!-- EXPLORE -->
+  <div class="nav-item" routerLink="/explore" routerLinkActive="active">
+    <span>🔍</span>
+    <p>Explore</p>
+  </div>
+
+  <!-- MY BOOKS -->
+  <div class="nav-item" routerLink="/my-books" routerLinkActive="active">
+    <span>📚</span>
+    <p>My Books</p>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="nav-item" routerLink="/profile" routerLinkActive="active">
+    <span>👤</span>
+    <p>Profile</p>
+  </div>
+
+</div>
+<!-- navbar end -->

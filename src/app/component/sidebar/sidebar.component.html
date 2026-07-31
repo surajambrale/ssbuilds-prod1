@@ -1,0 +1,71 @@
+<div class="sidebar-backdrop" *ngIf="isOpen" (click)="closeSidebar()"></div>
+
+<div class="sidebar" [class.open]="isOpen">
+  <div class="close-btn" (click)="closeSidebar()">X</div>
+
+  <h2>
+    Support Center
+  </h2>
+
+  <!-- 🔥 SUPPORT -->
+
+<div
+  class="menu-item"
+  *ngFor="let item of appSetting.settings">
+
+  <span>
+
+    <ng-container [ngSwitch]="item.label">
+
+      <span *ngSwitchCase="'Phone'">📞</span>
+
+      <span *ngSwitchCase="'WhatsApp'">💬</span>
+
+      <span *ngSwitchCase="'Email'">📧</span>
+
+      <span *ngSwitchCase="'Website'">🌐</span>
+
+      <span *ngSwitchCase="'Instagram'">📸</span>
+
+      <span *ngSwitchCase="'Facebook'">👍</span>
+
+      <span *ngSwitchCase="'Youtube'">▶️</span>
+
+      <span *ngSwitchCase="'Telegram'">✈️</span>
+
+      <span *ngSwitchCase="'LinkedIn'">💼</span>
+
+      <span *ngSwitchDefault>🔗</span>
+
+    </ng-container>
+
+  </span>
+
+  <a
+
+    [href]="
+      item.label=='Phone'
+        ? 'tel:'+item.value
+        : item.label=='Email'
+        ? 'mailto:'+item.value
+        : item.label=='WhatsApp'
+        ? 'https://wa.me/'+item.value
+        : item.value
+    "
+
+    target="_blank">
+
+    {{item.label}}
+
+  </a>
+
+</div>
+
+  <!-- 🔥 VERSION -->
+
+  <div class="version">
+
+    Version {{ appSetting.version }}
+
+  </div>
+</div>

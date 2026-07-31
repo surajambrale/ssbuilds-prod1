@@ -1,0 +1,424 @@
+.login {
+
+  height: 100vh;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  position: relative;
+
+  background:
+    radial-gradient(circle at top left, #1f2937 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #7f1d1d 0%, transparent 35%),
+    linear-gradient(135deg, #000000, #0f172a, #111827);
+
+  font-family: Arial, sans-serif;
+}
+
+/* 🔥 GLASS CARD */
+
+.login::before {
+
+  content: '';
+
+  position: absolute;
+
+  width: 420px;
+
+  height: 420px;
+
+  background: rgba(255,255,255,0.04);
+
+  border-radius: 50%;
+
+  top: -150px;
+
+  right: -120px;
+
+  filter: blur(40px);
+}
+
+.login::after {
+
+  content: '';
+
+  position: absolute;
+
+  width: 300px;
+
+  height: 300px;
+
+  background: rgba(255, 215, 0, 0.06);
+
+  border-radius: 50%;
+
+  bottom: -120px;
+
+  left: -100px;
+
+  filter: blur(40px);
+}
+
+/* 🔥 FORM BOX */
+
+.login h2 {
+
+  color: #fff;
+
+  font-size: 2rem;
+
+  margin-bottom: 30px;
+
+  font-weight: 700;
+
+  z-index: 2;
+
+  letter-spacing: 1px;
+}
+
+/* 🔥 INPUT */
+
+.login input {
+
+  width: 100%;
+
+  max-width: 340px;
+
+  padding: 15px 18px;
+
+  margin-bottom: 18px;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  outline: none;
+
+  background: rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(12px);
+
+  color: white;
+
+  font-size: 1rem;
+
+  box-sizing: border-box;
+
+  transition: all 0.3s ease;
+
+  z-index: 2;
+}
+
+.login input::placeholder {
+
+  color: #aaa;
+}
+
+.login input:focus {
+
+  border-color: gold;
+
+  background: rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 0 0 2px rgba(255,215,0,0.15),
+    0 8px 25px rgba(0,0,0,0.4);
+
+  transform: translateY(-1px);
+}
+
+/* 🔥 BUTTON */
+
+.login button {
+
+  width: 100%;
+
+  max-width: 340px;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #f59e0b,
+    #dc2626
+  );
+
+  color: white;
+
+  font-size: 1rem;
+
+  font-weight: bold;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35);
+
+  z-index: 2;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.login button:hover {
+
+  transform: translateY(-2px) scale(1.02);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.45);
+}
+
+.login button:active {
+
+  transform: scale(0.98);
+}
+
+.login button:disabled {
+
+  opacity: 0.7;
+
+  cursor: not-allowed;
+}
+
+/* 🔥 BUTTON SHINE */
+
+.login button::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+
+  left: -100%;
+
+  width: 100%;
+
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.2),
+    transparent
+  );
+
+  transition: 0.6s;
+}
+
+.login button:hover::before {
+
+  left: 100%;
+}
+
+/* 🔥 TOGGLE TEXT */
+
+.login p {
+
+  margin-top: 20px;
+
+  color: #bbb;
+
+  font-size: 0.95rem;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  z-index: 2;
+}
+
+.login p:hover {
+
+  color: gold;
+
+  text-decoration: underline;
+}
+
+/* 🔥 LOADER */
+
+.btn-loader {
+
+  width: 20px;
+
+  height: 20px;
+
+  border: 3px solid rgba(255,255,255,0.4);
+
+  border-top: 3px solid white;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+
+  100% {
+
+    transform: rotate(360deg);
+
+  }
+}
+
+/* 📱 MOBILE */
+
+@media (max-width: 480px) {
+
+  .login {
+
+    padding: 18px;
+  }
+
+  .login h2 {
+
+    font-size: 1.7rem;
+  }
+
+  .login input {
+
+    padding: 14px;
+  }
+
+  .login button {
+
+    padding: 14px;
+  }
+}
+
+// bottom navbar scss start
+
+/* 🔥 BOTTOM NAVBAR */
+
+.bottom-navbar {
+
+  position: fixed;
+
+  bottom: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  background: #0d0d0d;
+
+  display: flex;
+
+  justify-content: space-around;
+
+  align-items: center;
+
+  padding: 12px 0;
+
+  border-top: 1px solid #222;
+
+  z-index: 99999;
+
+  backdrop-filter: blur(10px);
+}
+
+/* 🔥 NAV ITEM */
+
+.nav-item {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  color: #888;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  font-size: 0.8rem;
+
+  width: 25%;
+}
+
+/* 🔥 ICON */
+
+.nav-item span {
+
+  font-size: 1.4rem;
+
+  transition: 0.3s;
+}
+
+/* 🔥 TEXT */
+
+.nav-item p {
+
+  margin: 0;
+
+  transition: 0.3s;
+}
+
+/* 🔥 HOVER */
+
+.nav-item:hover {
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* 🔥 ACTIVE TAB */
+
+.active {
+
+  color: gold !important;
+}
+
+/* 🔥 ACTIVE ICON */
+
+.active span {
+
+  color: gold !important;
+
+  transform: scale(1.1);
+}
+
+/* 🔥 ACTIVE TEXT */
+
+.active p {
+
+  color: gold !important;
+
+  font-weight: 600;
+}
+
+
+//bottom navbar scss end

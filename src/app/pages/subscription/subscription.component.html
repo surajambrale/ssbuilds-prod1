@@ -1,0 +1,70 @@
+<div class="subscription-container">
+
+  <h1>{{subscriptionSetting.planName}}</h1>
+
+  <p class="price">
+
+    ₹{{subscriptionSetting.price}}
+
+    <span>
+
+      / {{subscriptionSetting.duration}} Days
+
+    </span>
+
+  </p>
+
+  <ul>
+
+    <li>✅ Unlimited Books</li>
+
+    <li>✅ New Books Every Month</li>
+
+    <li>✅ Read Anytime</li>
+
+    <li>✅ Mobile Friendly</li>
+
+    <li>✅ Cancel Anytime</li>
+
+  </ul>
+
+  <button class="subscribe-btn" (click)="subscribe()" [disabled]="!subscriptionSetting.active">
+
+    {{ subscriptionSetting.active ? 'Subscribe Now' : 'Subscription Closed' }}
+
+  </button>
+
+</div>
+
+<!-- navbar start start -->
+<!-- 🔥 BOTTOM NAVBAR -->
+
+<div class="bottom-navbar">
+
+  <!-- HOME -->
+  <div class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <span>🏠</span>
+    <p>Home</p>
+  </div>
+
+  <!-- EXPLORE -->
+  <div class="nav-item" routerLink="/explore" routerLinkActive="active">
+    <span>🔍</span>
+    <p>Explore</p>
+  </div>
+
+  <!-- MY BOOKS -->
+  <div class="nav-item" routerLink="/my-books" routerLinkActive="active">
+    <span>📚</span>
+    <p>My Books</p>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="nav-item" routerLink="/profile" routerLinkActive="active">
+    <span>👤</span>
+    <p>Profile</p>
+  </div>
+
+</div>
+
+<!-- navbar end -->

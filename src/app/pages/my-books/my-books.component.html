@@ -1,0 +1,112 @@
+<div class="my-books-page">
+
+  <h1>📚 My Purchased Books</h1>
+
+  <div
+    class="book-box"
+    *ngFor="let book of purchasedBooks"
+  >
+
+    <img [src]="book.coverImage || book.image" />
+
+    <div class="book-info">
+
+      <h3>{{ book.name }}</h3>
+
+      <p>{{ book.author }}</p>
+
+      <!-- 🔥 PROGRESS BAR START -->
+
+      <!-- <div class="progress-section">
+
+        <div class="progress-top">
+
+          <span>Reading Progress</span>
+
+          <span>{{ book.progress || 0 }}%</span>
+
+        </div>
+
+        <div class="progress-bar">
+
+          <div
+            class="progress-fill"
+            [style.width.%]="book.progress || 0"
+          ></div>
+
+        </div>
+
+      </div> -->
+
+      <!-- 🔥 PROGRESS BAR END -->
+
+      <button
+        class="buy"
+        (click)="readBook(book)"
+      >
+
+        {{
+          book.progress > 0
+          ? 'Continue Reading'
+          : 'Read Book'
+        }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    class="empty"
+    *ngIf="purchasedBooks.length === 0"
+  >
+
+    No Purchased Books Found 📚
+
+  </div>
+
+</div>
+
+<!-- navbar start -->
+<div class="bottom-navbar">
+
+  <div
+    class="nav-item"
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <span>🏠</span>
+    <p>Home</p>
+  </div>
+
+  <div
+    class="nav-item"
+    routerLink="/explore"
+    routerLinkActive="active"
+  >
+    <span>🔍</span>
+    <p>Explore</p>
+  </div>
+
+  <div
+    class="nav-item"
+    routerLink="/my-books"
+    routerLinkActive="active"
+  >
+    <span>📚</span>
+    <p>My Books</p>
+  </div>
+
+  <div
+    class="nav-item"
+    routerLink="/profile"
+    routerLinkActive="active"
+  >
+    <span>👤</span>
+    <p>Profile</p>
+  </div>
+
+</div>
+<!-- navbar end -->
